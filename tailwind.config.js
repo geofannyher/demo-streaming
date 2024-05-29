@@ -19,7 +19,12 @@ export default {
       // => @media (min-width: 1536px)
     },
     extend: {
-      colors: {},
+      colors: {
+        main: "#fefeff",
+        second: "#5751c8",
+        text: "#2c2363",
+        bgtext: "#F9DC5C",
+      },
     },
   },
   plugins: [],

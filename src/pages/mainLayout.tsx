@@ -5,13 +5,15 @@ import { notification } from "antd";
 
 const MainLayout = () => {
   const navigate = useNavigate();
-  const landing = location?.pathname == "/signin";
+  const landing = location?.pathname == "/";
   const [api] = notification.useNotification();
   const token = getSession();
-
+  const adminPath = location.pathname == "/admin/login";
   useEffect(() => {
     if (!token && !landing) {
-      navigate("/");
+      navigate("/admin/login");
+    } else if (token && adminPath) {
+      navigate("/admin");
     }
   }, [token, landing, api, navigate]);
   return <Outlet />;

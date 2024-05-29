@@ -1,11 +1,11 @@
 export const saveSession = (token: string) => {
-  localStorage.setItem("user", token);
+  localStorage.setItem("operator", token);
 };
 
 export const getSession = () => {
-  return localStorage.getItem("user");
+  return localStorage.getItem("operator");
 };
 
 export const clearSession = () => {
-  localStorage.removeItem("user");
+  localStorage.clear();
 };
