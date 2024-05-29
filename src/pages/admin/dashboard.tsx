@@ -1,31 +1,40 @@
 import { notification } from "antd";
 import { useState } from "react";
 import { LoadingOutlined } from "@ant-design/icons";
-import { chatSend } from "../../services/api/chat.services";
-import { getSession } from "../../shared/Session";
+// import { chatSend } from "../../services/api/chat.services";
+// import { getSession } from "../../shared/Session";
 import {
   fetchStream,
   updateStreamStatus,
 } from "../../services/supabase/switch.services";
+import { textToSpeech } from "../../services/api/elevenlabs.services";
+import useAudioStore from "../../context/audioStore";
 const DashboardAdmin = () => {
   const [loadingText, setloadingText] = useState(false);
   const [status, setStatus] = useState("");
   const [inputText, setInputText] = useState("");
   const [api, context] = notification.useNotification();
-  const id = getSession();
+  // const id = getSession();
+  const { setAudioUrl } = useAudioStore();
   const processTheme = async () => {
     setloadingText(true);
     setStatus("proccess");
     try {
-      const res: any = await chatSend({
-        id: id ? id : "",
-        message: inputText,
-        model: "gpt-4o",
-        star: "mamat_gen",
-        is_rag: "false",
-      });
-      console.log(res?.data?.data);
+      // const res: any = await chatSend({
+      //   id: id ? id : "",
+      //   message: inputText,
+      //   model: "gpt-4o",
+      //   star: "mamat_gen",
+      //   is_rag: "false",
+      // });
+      // console.log(res?.data?.data);
 
+      const resVoice: any = await textToSpeech(
+        "halo nak kamu baik baik saja kan"
+      );
+      const mainAudioBlob = new Blob([resVoice?.data], { type: "audio/mpeg" });
+      const url = URL.createObjectURL(mainAudioBlob);
+      setAudioUrl(url);
       const resSettings: any = await fetchStream();
       if (resSettings?.status === 200) {
         const res: any = await updateStreamStatus({
