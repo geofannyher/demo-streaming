@@ -27,15 +27,15 @@ const DashboardUser = () => {
       .channel("streamsettings")
       .on(
         "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "streamsettings" },
+        { event: "*", schema: "public", table: "streamSettings" },
         (payload) => {
-          const newData = payload.new;
-          if (newData.value === true) {
-            // ganti sesuai dengan kolom yang tepat pada tabel streamsettings
-            setCurrentVideo(video2);
-            console.log("1")
-          } else {
-            getRandomVideo();
+          const newData: any = payload.new;
+          console.log(!newData.status);
+          if (newData.status) {
+            setCurrentVideo((prevVideo) =>
+              prevVideo === video2 ? video3 : video2
+            );
+            console.log("Video changed to:", currentVideo);
           }
         }
       )
@@ -44,6 +44,7 @@ const DashboardUser = () => {
     // Cleanup subscription on unmount
     return () => {
       supabase.removeChannel(channel);
+      setCurrentVideo(video1);
     };
   }, []);
 
@@ -67,7 +68,12 @@ const DashboardUser = () => {
         <div className="flex h-full flex-col items-center justify-center">
           <div>
             {currentVideo && (
-              <video autoPlay={true} loop={true} muted={true}>
+              <video
+                key={currentVideo}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+              >
                 <source src={currentVideo} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>

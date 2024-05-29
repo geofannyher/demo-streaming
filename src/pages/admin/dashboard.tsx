@@ -17,14 +17,15 @@ const DashboardAdmin = () => {
     setloadingText(true);
     setStatus("proccess");
     try {
-      // const res: any = await chatSend({
-      //   id: id ? id : "",
-      //   message: inputText,
-      //   model: "gpt-4o",
-      //   star: "mamat_gen",
-      //   is_rag: "false",
-      // });
-      // console.log(res?.data?.data);
+      const res: any = await chatSend({
+        id: id ? id : "",
+        message: inputText,
+        model: "gpt-4o",
+        star: "mamat_gen",
+        is_rag: "false",
+      });
+      console.log(res?.data?.data);
+
       const resSettings: any = await fetchStream();
       if (resSettings?.status === 200) {
         const res: any = await updateStreamStatus({
