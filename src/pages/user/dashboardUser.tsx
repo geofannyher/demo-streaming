@@ -24,7 +24,7 @@ const DashboardUser = () => {
     getRandomVideo();
 
     const channel = supabase
-      .channel("streamsettings-changes")
+      .channel("streamsettings")
       .on(
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "streamsettings" },
@@ -33,6 +33,7 @@ const DashboardUser = () => {
           if (newData.value === true) {
             // ganti sesuai dengan kolom yang tepat pada tabel streamsettings
             setCurrentVideo(video2);
+            console.log("1")
           } else {
             getRandomVideo();
           }
